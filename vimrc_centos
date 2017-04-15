@@ -1,0 +1,157 @@
+if v:lang =~ "utf8$" || v:lang =~ "UTF-8$"
+   set fileencodings=ucs-bom,utf-8,latin1
+endif
+
+set nocompatible	" Use Vim defaults (much better!)
+set bs=indent,eol,start		" allow backspacing over everything in insert mode
+"set ai			" always set autoindenting on
+"set backup		" keep a backup file
+set viminfo='20,\"50	" read/write a .viminfo file, don't store more
+			" than 50 lines of registers
+set history=50		" keep 50 lines of command line history
+set ruler		" show the cursor position all the time
+
+" Only do this part when compiled with support for autocommands
+if has("autocmd")
+  augroup redhat
+  autocmd!
+  " In text files, always limit the width of text to 78 characters
+  " autocmd BufRead *.txt set tw=78
+  " When editing a file, always jump to the last cursor position
+  autocmd BufReadPost *
+  \ if line("'\"") > 0 && line ("'\"") <= line("$") |
+  \   exe "normal! g'\"" |
+  \ endif
+  " don't write swapfile on most commonly used directories for NFS mounts or USB sticks
+  autocmd BufNewFile,BufReadPre /media/*,/run/media/*,/mnt/* set directory=~/tmp,/var/tmp,/tmp
+  " start with spec file template
+  autocmd BufNewFile *.spec 0r /usr/share/vim/vimfiles/template.spec
+  augroup END
+endif
+
+if has("cscope") && filereadable("/usr/bin/cscope")
+   set csprg=/usr/bin/cscope
+   set csto=0
+   set cst
+   set nocsverb
+   " add any database in current directory
+   if filereadable("cscope.out")
+      cs add $PWD/cscope.out
+   " else add database pointed to by environment
+   elseif $CSCOPE_DB != ""
+      cs add $CSCOPE_DB
+   endif
+   set csverb
+endif
+
+" Switch syntax highlighting on, when the terminal has colors
+" Also switch on highlighting the last used search pattern.
+if &t_Co > 2 || has("gui_running")
+  syntax on
+  set hlsearch
+endif
+
+filetype plugin on
+
+if &term=="xterm"
+     set t_Co=256
+     set t_Sb=[4%dm
+     set t_Sf=[3%dm
+endif
+
+" Don't wake up system with blinking cursor:
+" http://www.linuxpowertop.org/known.php
+let &guicursor = &guicursor . ",a:blinkon0"
+
+" vundle 插件管理器
+set nocompatible
+filetype off
+set rtp+=~/.vim/bundle/Vundle.vim/
+call vundle#begin()
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'scrooloose/nerdtree'
+Plugin 'jistr/vim-nerdtree-tabs'
+Plugin 'kien/ctrlp.vim'
+call vundle#end()
+filetype plugin indent on
+
+" 配色主题 molokai
+colo molokai
+
+" tab替换为4个空格
+set shiftwidth=4
+set tabstop=4
+set softtabstop=4
+set expandtab
+set autoindent
+
+" 设置粘贴模式 F12
+set pastetoggle=<F12>
+
+" 使用语法高亮定义代码折叠
+set foldmethod=syntax
+" 打开文件时默认不折叠代码
+set foldlevelstart=99
+
+" 设置文件的代码形式 utf8
+set encoding=utf-8
+set termencoding=utf-8
+set fileencoding=utf-8
+set fileencodings=ucs-bom,utf-8,chinese,cp936
+" gvim提示信息防止乱码
+" language messages zh_CN.utf-8
+language messages en_US.utf-8
+" set helplang=cn " 设置中文帮助
+set history=1000    " 保留历史记录
+set nu! " 设置显示行号
+set wrap    " 设置自动换行
+set linebreak   " 整词换行，与自动换行搭配使用
+set list    " 显示制表符和行尾符$
+set autochdir   " 自动设置当前目录为正在编辑的目录
+set hidden  " 自动隐藏没有保存的缓冲区，切换buffer时不给出保存当前buffer的提示
+set scrolloff=5 " 在光标接近底端或顶端时，自动下滚或上滚
+set showtabline=2   " 设置显示标签栏
+set autoread    " 设置当文件在外部被修改，自动更新该文件
+set nobackup    " 不生成备份文件
+set noundofile  " 不生成un~文件
+
+set hlsearch    " 高亮显示查找结果
+set incsearch   " 增量查找
+
+" 状态栏的设置
+set statusline=[%F]%y%r%m%*%=[Line:%l/%L,Column:%c][%p%%]   " 显示文件名：总行数，总的字符数
+set ruler   " 在编辑过程中，在右下角显示光标位置的状态行
+
+" 代码设置
+syntax enable   " 打开语法高亮
+syntax on   " 打开语法高亮
+set showmatch   " 设置匹配模式,相当于括号匹配
+set smartindent " 智能对齐
+" set cursorcolumn  " 启用光标列
+set cursorline  " 启用光标行
+set guicursor+=a:blinkon0   " 设置光标不闪烁
+set showcmd " 状态栏显示当前执行的命令
+set fdm=indent
+
+" ========= Plugin 配置 =========
+" NERDTree 打开/关闭快捷键
+map <F2> :NERDTreeToggle<CR>
+" NERDTree 默认路径配置
+" au VIMEnter * NERDTree D:\vim
+" 显示书签列表
+let NERDTreeShowBookmarks=1
+" 显示行号
+let NERDTreeShowLineNumbers=1
+let NERDTreeAutoCenter=1
+" 显示隐藏文件
+let NERDTreeShowHidden=1
+" 设置宽度
+let NERDTreeWinSize=21
+" 在终端启动vim时，共享NERDTree
+let g:nerdtree_tabs_open_on_console_startup=1
+" 忽略以下文件的显示
+" let NERDTreeIgnore=['\.pyc','\~$','\.swp']
+
+" Markdown语法文件配置
+au Syntax markdown source ~/.vim/syntax/markdown.vim
+au BufRead,BufNewFile *.md set filetype=markdown
