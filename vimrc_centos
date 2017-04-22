@@ -77,6 +77,8 @@ filetype plugin indent on
 
 " 配色主题 molokai
 colo molokai
+" 字体 Consolas 12号大小
+" set guifont=Consolas:h12
 
 " tab替换为4个空格
 set shiftwidth=4
@@ -151,6 +153,13 @@ let NERDTreeWinSize=21
 let g:nerdtree_tabs_open_on_console_startup=1
 " 忽略以下文件的显示
 " let NERDTreeIgnore=['\.pyc','\~$','\.swp']
+
+" map快捷键映射
+" map <A-o> :tabnew<CR>
+" map <A-w> :q!<CR>
+" map <A-W> :qa!<CR>
+" map <A-s> :mks! $VIM/_Session.vim<CR>
+" map <A-l> :so $VIM/_Session.vim<CR>
 
 " Markdown语法文件配置
 au Syntax markdown source ~/.vim/syntax/markdown.vim

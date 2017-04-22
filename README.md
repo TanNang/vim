@@ -1,6 +1,9 @@
-# vim(centos) & gvim(windows) 配置,molokai主题,markdown_syntax
+# vim(centos) & gvim(windows) 配置
 
 - vimrc_centos for CentOS vim
+
 - vimrc_windows for Windows gvim
-- colors/molokai.vim 通用,经典主题
-- syntax/markdown.vim 通用,markdown语法高亮
+
+- colors/molokai.vim    molokai主题
+
+- syntax/markdown.vim   markdown语法高亮
