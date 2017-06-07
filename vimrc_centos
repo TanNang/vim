@@ -78,7 +78,6 @@ set fdm=indent
 map <F2> :NERDTreeToggle<CR>
 " NERDTree 默认路径配置
 " au VIMEnter * NERDTree D:\vim
-autocmd VimEnter * wincmd w
 let NERDTreeMinimalUI = 1   " 关闭书签标签('Press ? for help')
 " 显示书签列表
 let NERDTreeShowBookmarks=1
@@ -100,7 +99,3 @@ let g:nerdtree_tabs_open_on_console_startup=1
 " map <A-W> :qa!<CR>
 " map <A-s> :mks! $VIM/_Session.vim<CR>
 " map <A-l> :so $VIM/_Session.vim<CR>
-
-" Markdown语法文件配置
-au Syntax markdown source ~/.vim/syntax/markdown.vim
-au BufRead,BufNewFile *.md set filetype=markdown
