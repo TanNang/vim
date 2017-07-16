@@ -40,7 +40,7 @@ set fileencoding=utf-8
 set fileencodings=ucs-bom,utf-8,chinese,cp936
 " gvim提示信息防止乱码
 " language messages zh_CN.utf-8
-language messages en_US.utf-8
+" language messages en_US.utf-8
 " set helplang=cn " 设置中文帮助
 set history=1000    " 保留历史记录
 set nu! " 设置显示行号

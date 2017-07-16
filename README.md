@@ -1,6 +1,6 @@
-# vim(centos) & gvim(windows) 配置
+# vim & gvim(windows) 配置
 
-- vimrc_centos for CentOS vim
+- vimrc for linux vim
 
 - vimrc_windows for Windows gvim
 
@@ -8,4 +8,4 @@
 
 - syntax/markdown.vim   markdown语法高亮
 
-2017-05-02 14:36:36
+2017-07-16 15:42:00
