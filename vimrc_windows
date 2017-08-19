@@ -1,3 +1,37 @@
+source $VIMRUNTIME/vimrc_example.vim
+source $VIMRUNTIME/mswin.vim
+behave mswin
+
+set diffexpr=MyDiff()
+function! MyDiff()
+  let opt = '-a --binary '
+  if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
+  if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
+  let arg1 = v:fname_in
+  if arg1 =~ ' ' | let arg1 = '"' . arg1 . '"' | endif
+  let arg2 = v:fname_new
+  if arg2 =~ ' ' | let arg2 = '"' . arg2 . '"' | endif
+  let arg3 = v:fname_out
+  if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
+  if $VIMRUNTIME =~ ' '
+    if &sh =~ '\<cmd'
+      if empty(&shellxquote)
+        let l:shxq_sav = ''
+        set shellxquote&
+      endif
+      let cmd = '"' . $VIMRUNTIME . '\diff"'
+    else
+      let cmd = substitute($VIMRUNTIME, ' ', '" ', '') . '\diff"'
+    endif
+  else
+    let cmd = $VIMRUNTIME . '\diff'
+  endif
+  silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3
+  if exists('l:shxq_sav')
+    let &shellxquote=l:shxq_sav
+  endif
+endfunction
+
 " vundle 插件管理器
 set nocompatible
 filetype off
@@ -7,6 +41,7 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'scrooloose/nerdtree'
 Plugin 'jistr/vim-nerdtree-tabs'
 Plugin 'kien/ctrlp.vim'
+Plugin 'taglist.vim'
 call vundle#end()
 filetype plugin indent on
 
@@ -82,8 +117,8 @@ set fdm=indent
 " NERDTree 打开/关闭快捷键
 map <F2> :NERDTreeToggle<CR>
 " NERDTree 默认路径配置
-au VIMEnter * NERDTree D:\vim
-autocmd VimEnter * wincmd w
+au VIMEnter * NERDTree D:\temp
+autocmd VIMEnter * wincmd w
 let NERDTreeMinimalUI = 1   " 关闭书签标签('Press ? for help')
 " 显示书签列表
 let NERDTreeShowBookmarks=1
@@ -93,11 +128,39 @@ let NERDTreeAutoCenter=1
 " 显示隐藏文件
 let NERDTreeShowHidden=1
 " 设置宽度
-let NERDTreeWinSize=21
+let NERDTreeWinSize=24
 " 在终端启动vim时，共享NERDTree
 let g:nerdtree_tabs_open_on_console_startup=1
 " 忽略以下文件的显示
 " let NERDTreeIgnore=['\.pyc','\~$','\.swp']
+
+" ========== taglist ==========
+" 自动打开taglist
+" let Tlist_Auto_Open=1
+" 这里比较重要了，设置ctags的位置
+let Tlist_Ctags_Cmd='ctags'
+" 热键设置，呼出和关闭Taglist
+map <F3> :TlistToggle<CR>
+" 让taglist窗口出现在Vim的左边
+" let Tlist_Use_Left_Window=1
+" 让taglist窗口出现在Vim的右边
+let Tlist_Use_Right_Window=1
+" 当同时显示多个文件中的tag时，可使taglist只显示当前文件tag，其它文件的tag都被折叠起来
+let Tlist_File_Fold_Auto_Close=1
+" 只显示一个文件中的tag，默认为显示多个
+let Tlist_Show_One_File=1
+" Tag的排序规则，以名字排序；默认是以在文件中出现的顺序排序
+" let Tlist_Sort_Type='name'
+" Taglist窗口打开时，立刻切换为有焦点状态
+let Tlist_GainFocus_On_ToggleOpen=1
+" taglist始终解析文件中的tag，不管taglist窗口有没有打开
+let Tlist_Process_File_Always=1
+" 如果taglist窗口是最后一个窗口，则退出vim
+let Tlist_Exit_OnlyWindow=1
+" 设置窗体宽度，可以根据自己喜好设置
+let Tlist_WinWidth=24
+" 缺省情况下，双击一个tag时，才会跳到该tag定义的位置，设置单击tag就跳转
+let Tlist_Use_SingleClick=1
 
 " map快捷键映射
 map <A-o> :tabnew<CR>
@@ -113,3 +176,6 @@ nmap <A-v> v
 vmap <A-v> v
 nmap <C-v> <C-v>
 vmap <C-v> <C-v>
+imap <F8> <pre><code class="language-bash line-numbers"><script type="text/plain">
+imap <S-F8> </script></code></pre>
+cmap <F9> s/^\(<pre><code.\{-}><script.\{-}>\)\n/\1/g

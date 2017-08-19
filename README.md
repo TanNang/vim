@@ -8,4 +8,6 @@
 
 - syntax/markdown.vim   markdown语法高亮
 
-2017-07-16 15:42:00
+- ctags.exe windows版ctags，放在$vim/vim80/目录下
+
+update on 2017-08-19
