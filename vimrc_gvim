@@ -1,8 +1,8 @@
 " vundle 插件管理器
 set nocompatible
 filetype off
-set rtp+=~/.vim/bundle/Vundle.vim/  " vundle 主目录
-call vundle#begin()
+set rtp+=$vim/vimfiles/bundle/Vundle.vim/   " vundle 主目录
+call vundle#begin('$vim/vimfiles/bundle/')  " 插件安装目录
 Plugin 'VundleVim/Vundle.vim'       " 基本插件，必须
 Plugin 'scrooloose/nerdtree'        " NERDTree 目录树
 Plugin 'jistr/vim-nerdtree-tabs'    " NERDTree 共享插件
@@ -11,10 +11,13 @@ Plugin 'taglist.vim'                " ctags + taglist 插件
 call vundle#end()
 filetype plugin indent on
 
-" 256-color
-set t_Co=256
 " molokai 主题
 colo molokai
+" Consolas 字体
+set guifont=Consolas:h12
+
+"gvim 窗口自动全屏
+autocmd GUIEnter * simalt ~x
 
 " Tab 替换为 4 个空格
 set shiftwidth=4
@@ -31,6 +34,13 @@ set encoding=utf-8
 set termencoding=utf-8
 set fileencoding=utf-8
 set fileencodings=utf-8,chinese,cp936
+
+" gvim 配置
+set mouse=a                     " 任何模式下鼠标均可用
+set guioptions-=T               " 隐藏 gvim 工具栏
+set guioptions-=m               " 隐藏 gvim 菜单栏
+set helplang=cn                 " 启用中文帮助
+language messages zh_CN.utf-8   " 启用中文提示
 
 " 主功能设置
 set history=1000    " 保留历史记录
@@ -68,6 +78,10 @@ au BufReadPost * if line("'\"") > 0 && line ("'\"") <= line("$") | exe "normal g
 " ========= Plugin: NERDTree =========
 " 自动呼出 NERDTree
 let g:nerdtree_tabs_open_on_console_startup=1
+" NERDTree 默认打开路径
+au VIMEnter * NERDTree D:\temp
+" 启动 gvim 时将焦点切至编辑窗口
+autocmd VIMEnter * wincmd w
 " 呼出/关闭快捷键 <F2>
 map <F2> :NERDTreeToggle<CR>
 " 隐藏帮助文字 ('Press ? for help')
@@ -112,3 +126,13 @@ let Tlist_Process_File_Always=1
 let Tlist_Exit_OnlyWindow=1
 " 设置窗体宽度
 let Tlist_WinWidth=24
+" 单击 tag 时跳转至 tag 处，默认要双击
+" let Tlist_Use_SingleClick=1
+
+" map 快捷键映射
+map <A-o> :tabnew<CR>
+map <A-c> :tabc<CR>
+map <A-j> :tabn<CR>
+map <A-k> :tabp<CR>
+nmap <C-v> <C-v>
+vmap <C-v> <Esc>
