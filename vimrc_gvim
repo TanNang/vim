@@ -41,6 +41,8 @@ set guioptions-=T               " 隐藏 gvim 工具栏
 set guioptions-=m               " 隐藏 gvim 菜单栏
 set helplang=cn                 " 启用中文帮助
 language messages zh_CN.utf-8   " 启用中文提示
+source $VIMRUNTIME/delmenu.vim  " gvim 右键菜单防乱码
+source $VIMRUNTIME/menu.vim     " gvim 右键菜单防乱码
 
 " 主功能设置
 set history=1000    " 保留历史记录
